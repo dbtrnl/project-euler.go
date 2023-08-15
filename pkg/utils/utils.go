@@ -3,6 +3,8 @@ package utils
 import (
 	"math"
 	"strconv"
+
+	"github.com/dbtrnl/project-euler/golang/internal/entities.go"
 )
 
 func ReturnFibonacciNumbersUntil(limit int) []int {
@@ -71,14 +73,76 @@ func IsEvenlyDivisibleByEveryNumberInInterval(num, interval_start, interval_end 
 	return result
 }
 
-/*
-  if (order === "descending") {
-    for (let i = intervalEnd; i >= intervalStart; i--) {
-      isDivisible = isNumberEvenlyDivisibleBy(number, i)
-      if (!isDivisible) return false
-    }
-    result = true
-  }
-
+func FindSumOfNumberIntervalSquares(intervalStart, intervalEnd int) int {
+  result := 0
+  for i := intervalStart; i <= intervalEnd; i++{
+		result += int(math.Pow(float64(i), 2.0))
+	}
   return result
-} */
+}
+
+func FindSquareOfNumberIntervalSum(intervalStart, intervalEnd int) int {
+  result := 0
+	for i := intervalStart; i <= intervalEnd; i++{
+		result += i
+	}
+  return int(math.Pow(float64(result), 2.0))
+}
+
+func IsPrime(num int) bool {
+	if (num <= 1) {
+		return false
+	}
+  // 2 and 3 are both primes
+  if (num <= 3) { return true }
+  // Research this property of primes... Every prime is odd, but what about %3?
+  if (num % 2 == 0 || num % 3 == 0) { return false }
+  for i := 5; i * i <= num; i += 6 {
+    if (num % i == 0 || num % (i + 2) == 0) { return false }
+  }
+  return true
+}
+
+func FindNthPrime(nthPrime int) int {
+  var primeArray []int
+  currNum := 0
+
+	for len(primeArray) < nthPrime {
+		isCurrNumPrime := IsPrime(currNum)
+		if !isCurrNumPrime { currNum++; continue }
+		primeArray = append(primeArray, currNum); currNum++
+	}
+  return primeArray[nthPrime - 1]
+}
+
+func FindProductOfDigitsInNumberSeries(digitSeries string) int {
+	product := 1
+	for _, digitStr := range digitSeries {
+		digit, _ := strconv.Atoi(string(digitStr))
+		product *= digit
+	}
+	return product
+}
+
+func IsSetPythagoreanTriplet(inputSet entities.TripletSetObject) bool {
+  aSquared := math.Pow(float64(inputSet.A), 2.0)
+	bSquared := math.Pow(float64(inputSet.B), 2.0)
+	cSquared := math.Pow(float64(inputSet.C), 2.0)
+
+  if (aSquared + bSquared == cSquared) {
+		return true
+	}
+  return false
+}
+
+func FindAllPrimesSmallerThan(limit int) []int {
+  var primeArr []int
+	iterator := 0
+  if (limit == 0) { return primeArr }
+
+	for iterator < limit {
+		if IsPrime(iterator) { primeArr = append(primeArr, iterator) }
+		iterator++
+	}
+  return primeArr
+}

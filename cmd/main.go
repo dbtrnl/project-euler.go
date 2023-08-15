@@ -15,6 +15,11 @@ var problemsSlice = []func()int {
 	problems.Problem3,
 	problems.Problem4,
 	problems.Problem5,
+	problems.Problem6,
+	problems.Problem7,
+	problems.Problem8,
+	problems.Problem9,
+	problems.Problem10,
 }
 
 func main() {
@@ -24,4 +29,3 @@ func main() {
 		fmt.Printf("Answer of '%s' is: %d\n", fnName, result)
 	}
 }
-

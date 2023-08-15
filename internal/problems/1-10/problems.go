@@ -1,6 +1,8 @@
 package problems
 
 import (
+	"github.com/dbtrnl/project-euler/golang/internal/entities.go"
+	"github.com/dbtrnl/project-euler/golang/internal/input_data"
 	"github.com/dbtrnl/project-euler/golang/pkg/utils"
 )
 
@@ -92,4 +94,61 @@ func Problem5() int {
 		} else { currNum++ }
 	}
 	return currNum
+}
+
+func Problem6() int {
+	sumOfSquares := utils.FindSumOfNumberIntervalSquares(1, 100)
+	squareOfSum := utils.FindSquareOfNumberIntervalSum(1, 100)
+	answer := squareOfSum - sumOfSquares
+
+	return answer
+}
+
+func Problem7() int {
+	nth := 10001
+	answer := utils.FindNthPrime(nth)
+	return answer
+}
+
+func Problem8() int {
+	series_size, greatestProduct := 13, 0
+
+	for j := 0; j < len(input_data.Problem8Input) - series_size - 1; j++ {
+		currentSeries := input_data.Problem8Input[j : j+series_size]
+		currentSeriesSum := utils.FindProductOfDigitsInNumberSeries(currentSeries)
+
+		if (currentSeriesSum != 0 && currentSeriesSum > greatestProduct) {
+			greatestProduct = currentSeriesSum
+		}
+	}
+	return greatestProduct
+}
+
+func Problem9() int {
+	max_iterations := 1000
+	var newTripletSet entities.TripletSetObject
+	answer := 0
+
+	for c := 3; c <= max_iterations; c++ {
+		for b := 2; b < c; b++ {
+			for a := 1; a < b; a++ {
+				newTripletSet = entities.TripletSetObject{A: a, B: b, C: c}
+				if newTripletSet.A + newTripletSet.B + newTripletSet.C == 1000 && newTripletSet.IsPythagoreanTriplet() == true {
+					answer = newTripletSet.A * newTripletSet.B * newTripletSet.C
+				}
+			}
+		}
+	}
+	return answer
+}
+
+func Problem10() int {
+	max_prime_value := 2000000
+	answer := 0
+	primesArray := utils.FindAllPrimesSmallerThan(max_prime_value)
+
+	for _, num := range primesArray {
+		answer += num
+	}
+	return answer
 }
