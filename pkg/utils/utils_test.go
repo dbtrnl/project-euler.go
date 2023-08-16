@@ -3,7 +3,7 @@ package utils
 import (
 	"testing"
 
-	"github.com/dbtrnl/project-euler/golang/internal/entities.go"
+	"github.com/dbtrnl/project-euler/golang/internal/entities"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -53,8 +53,8 @@ func TestFindProductOfDigitsInNumberSeries(t *testing.T) {
 }
 
 func TestIsSetPythagoreanTriplet(t *testing.T) {
-	assert.Equal(t, false, IsSetPythagoreanTriplet(entities.TripletSetObject{A:1, B:2, C:3}))
-	assert.Equal(t, true, IsSetPythagoreanTriplet(entities.TripletSetObject{A:3, B:4, C:5}))
+	assert.Equal(t, false, IsSetPythagoreanTriplet(entities.TripletSet{A:1, B:2, C:3}))
+	assert.Equal(t, true, IsSetPythagoreanTriplet(entities.TripletSet{A:3, B:4, C:5}))
 }
 
 func TestFindAllPrimesSmallerThan(t *testing.T) {

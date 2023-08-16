@@ -1,7 +1,7 @@
 package problems
 
 import (
-	"github.com/dbtrnl/project-euler/golang/internal/entities.go"
+	"github.com/dbtrnl/project-euler/golang/internal/entities"
 	"github.com/dbtrnl/project-euler/golang/internal/input_data"
 	"github.com/dbtrnl/project-euler/golang/pkg/utils"
 )
@@ -157,13 +157,13 @@ func Problem8() int {
 // Find the product abc.
 func Problem9() int {
 	max_iterations := 1000
-	var newTripletSet entities.TripletSetObject
+	var newTripletSet entities.TripletSet
 	answer := 0
 
 	for c := 3; c <= max_iterations; c++ {
 		for b := 2; b < c; b++ {
 			for a := 1; a < b; a++ {
-				newTripletSet = entities.TripletSetObject{A: a, B: b, C: c}
+				newTripletSet = entities.TripletSet{A: a, B: b, C: c}
 				if newTripletSet.A + newTripletSet.B + newTripletSet.C == 1000 && newTripletSet.IsPythagoreanTriplet() == true {
 					answer = newTripletSet.A * newTripletSet.B * newTripletSet.C
 				}

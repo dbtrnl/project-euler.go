@@ -4,7 +4,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/dbtrnl/project-euler/golang/internal/entities.go"
+	"github.com/dbtrnl/project-euler/golang/internal/entities"
 )
 
 func ReturnFibonacciNumbersUntil(limit int) []int {
@@ -124,7 +124,7 @@ func FindProductOfDigitsInNumberSeries(digitSeries string) int {
 	return product
 }
 
-func IsSetPythagoreanTriplet(inputSet entities.TripletSetObject) bool {
+func IsSetPythagoreanTriplet(inputSet entities.TripletSet) bool {
   aSquared := math.Pow(float64(inputSet.A), 2.0)
 	bSquared := math.Pow(float64(inputSet.B), 2.0)
 	cSquared := math.Pow(float64(inputSet.C), 2.0)
