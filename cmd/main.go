@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"strings"
 
-	problems "github.com/dbtrnl/project-euler/golang/internal/problems/1-10"
+	"github.com/dbtrnl/project-euler/golang/internal/problems"
 )
 
 var problemsSlice = []func()int {
