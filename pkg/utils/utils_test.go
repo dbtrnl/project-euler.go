@@ -3,7 +3,6 @@ package utils
 import (
 	"testing"
 
-	"github.com/dbtrnl/project-euler/golang/internal/entities"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -46,11 +45,6 @@ func TestFindProductOfDigitsInNumberSeries(t *testing.T) {
 	assert.Equal(t, 0, FindProductOfDigitsInNumberSeries("86523932780"))
 }
 
-func TestIsSetPythagoreanTriplet(t *testing.T) {
-	assert.Equal(t, false, IsSetPythagoreanTriplet(entities.TripletSet{A:1, B:2, C:3}))
-	assert.Equal(t, true, IsSetPythagoreanTriplet(entities.TripletSet{A:3, B:4, C:5}))
-}
-
 func TestFindAllPrimesSmallerThan(t *testing.T) {
 	expected := []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79,
 		83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173,
@@ -62,4 +56,45 @@ func TestFindAllPrimesSmallerThan(t *testing.T) {
 		83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179,
 	}
 	assert.Equal(t, expected, FindAllPrimesSmallerThan(180))
+}
+
+func TestFindAllProperDivisorsOf(t *testing.T) {
+	expected := []int{1}
+	result, err := FindAllProperDivisorsOf(1)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1}
+	result, err = FindAllProperDivisorsOf(2)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2, 4}
+	result, err = FindAllProperDivisorsOf(8)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2, 4, 5, 10, 20, 25, 50}
+	result, err = FindAllProperDivisorsOf(100)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200, 250, 500}
+	result, err = FindAllProperDivisorsOf(1000)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 7, 11, 13, 77, 91, 143}
+	result, err = FindAllProperDivisorsOf(1001)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 17, 59}
+	result, err = FindAllProperDivisorsOf(1003)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	result, err = FindAllProperDivisorsOf(-1)
+	assert.Nil(t, result)
+	assert.EqualError(t, err, "invalid value: -1")
 }
