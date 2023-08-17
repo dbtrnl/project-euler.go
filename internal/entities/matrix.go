@@ -12,11 +12,11 @@ const (
 	col rowOrCol = "col"
 )
 
-type leftOrRight string
+type mainOrAnti string
 
 const (
-	left  leftOrRight = "left"
-	right leftOrRight = "right"
+	anti  mainOrAnti = "anti"
+	main mainOrAnti = "main"
 )
 
 type Matrix [][]int
@@ -73,6 +73,7 @@ func (m Matrix) Print() {
 }
 
 // Multiplies 'adjNums' numbers in the same row or column, starting from index [rowStart][colStart]
+// For more info on the theory see https://en.wikipedia.org/wiki/Main_diagonal
 func (m *Matrix) ReturnProductOfAdjacentNumbers(rowOrCol rowOrCol, adjNums, rowStart, colStart int) (int, error) {
 	result := 1
 	isIterationFinished := false
@@ -112,7 +113,9 @@ func (m *Matrix) ReturnProductOfAdjacentNumbers(rowOrCol rowOrCol, adjNums, rowS
 	return result, nil
 }
 
-func (m *Matrix) ReturnProductOfAdjacentNumbersDiag(leftOrRight leftOrRight, adjNums, rowStart, colStart int) (int, error) {
+// Multiplies 'adjNums' numbers in the diagonal (main or secondary), starting from index [rowStart][colStart]
+// For more info on the theory see https://en.wikipedia.org/wiki/Main_diagonal
+func (m *Matrix) ReturnProductOfAdjacentNumbersDiag(mainOrAnti mainOrAnti, adjNums, rowStart, colStart int) (int, error) {
 	result := 1
 	isIterationFinished := false
 	currRow, currCol := rowStart, colStart
@@ -123,8 +126,8 @@ func (m *Matrix) ReturnProductOfAdjacentNumbersDiag(leftOrRight leftOrRight, adj
 	if adjNums < 0 {
 		return 0, errors.New(fmt.Sprintf("invalid adjNums value: %v", adjNums))
 	}
-	switch leftOrRight {
-	case left:
+	switch mainOrAnti {
+	case anti:
 		for {
 			isIterationFinished = currCol == colStart-adjNums && currRow == rowStart+adjNums
 			isCurrentIndexValid = m.IsIndexValid(currRow, currCol)
@@ -135,7 +138,7 @@ func (m *Matrix) ReturnProductOfAdjacentNumbersDiag(leftOrRight leftOrRight, adj
 			currCol--
 			currRow++
 		}
-	case right:
+	case main:
 		for {
 			isIterationFinished = currCol == colStart+adjNums && currRow == rowStart+adjNums
 			isCurrentIndexValid = m.IsIndexValid(currRow, currCol)
@@ -147,7 +150,7 @@ func (m *Matrix) ReturnProductOfAdjacentNumbersDiag(leftOrRight leftOrRight, adj
 			currCol++
 		}
 	default:
-		return 0, errors.New(fmt.Sprintf("invalid 'leftOrRight' value: %v", leftOrRight))
+		return 0, errors.New(fmt.Sprintf("invalid 'mainOrAnti' value: %v", mainOrAnti))
 	}
 	return result, nil
 }
