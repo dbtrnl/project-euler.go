@@ -371,3 +371,10 @@ func Problem13() int {
 	resultStr, _ := strconv.Atoi(result.String()[0:10])
 	return resultStr
 }
+
+func Problem14() int {
+	num_limit := 1000000
+	sequence := utils.FindLongestCollatzSequenceUnder(num_limit)
+	result := sequence[0]
+	return result
+}
