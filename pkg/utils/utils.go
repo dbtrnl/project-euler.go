@@ -186,3 +186,33 @@ func FindAllProperDivisorsOf(num int) ([]int, error) {
 	}
 	return divisors, nil
 }
+
+// Returns a sequence of numbers calculated according to the Collatz Conjecture
+// Source: en.wikipedia.org/wiki/Collatz_conjecture
+func FindCollatzSequenceOf(inputNumber int) []int {
+  sequence := []int{inputNumber}
+  num := inputNumber
+
+  for num > 1 {
+    if num % 2 == 0 {
+			num /= 2
+		} else {
+			num = 3 * num + 1
+		}
+    sequence = append(sequence, num)
+  }
+  return sequence
+}
+
+// Returns the longest Collatz Sequence of all numbers under limit N
+func FindLongestCollatzSequenceUnder(limit int) []int {
+  var longestSequence []int
+
+  for i := 1; i < limit; i++ {
+    currSequence := FindCollatzSequenceOf(i)
+    if (len(currSequence) > len(longestSequence)) {
+      longestSequence = currSequence
+    }
+  }
+  return longestSequence
+}
