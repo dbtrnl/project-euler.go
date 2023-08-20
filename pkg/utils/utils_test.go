@@ -164,3 +164,75 @@ func TestFactorialBig(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, result, expected)
 }
+
+func TestReturnWrittenNumber(t *testing.T) {
+	expected := "zero"
+	result := ReturnNumberString(0)
+	assert.Equal(t, expected, result)
+
+	expected = "eleven"
+	result = ReturnNumberString(11)
+	assert.Equal(t, expected, result)
+
+	expected = "one hundred"
+	result = ReturnNumberString(100)
+	assert.Equal(t, expected, result)
+
+	expected = "one hundred and eleven"
+	result = ReturnNumberString(111)
+	assert.Equal(t, expected, result)
+
+	expected = "one thousand"
+	result = ReturnNumberString(1000)
+	assert.Equal(t, expected, result)
+
+	expected = "one thousand and one"
+	result = ReturnNumberString(1001)
+	assert.Equal(t, expected, result)
+
+	expected = "one thousand and eleven"
+	result = ReturnNumberString(1011)
+	assert.Equal(t, expected, result)
+
+	expected = "one thousand one hundred and eleven"
+	result = ReturnNumberString(1111)
+	assert.Equal(t, expected, result)
+
+	/* TODO
+	expected = "ten thousand"
+	result = ReturnNumberString(10000)
+	assert.Equal(t, expected, result)
+
+	expected = "ten thousand and one"
+	result = ReturnNumberString(10001)
+	assert.Equal(t, expected, result)
+
+	expected = "ten thousand eleven"
+	result = ReturnNumberString(10011)
+	assert.Equal(t, expected, result)
+
+	expected = "ten thousand one hundred eleven"
+	result = ReturnNumberString(10111)
+	assert.Equal(t, expected, result)
+
+	expected = "eleven thousand one hundred eleven"
+	result = ReturnNumberString(11111)
+	assert.Equal(t, expected, result)
+	*/
+}
+
+func TestCountLettersInString(t *testing.T) {
+	expected := 23
+	result := CountLettersInString("three hundred and forty-two")
+	assert.Equal(t, expected, result)
+	result = CountLettersInString("2$three hundred and forty-two")
+	assert.Equal(t, expected, result)
+
+	expected = 20
+	result = CountLettersInString("one hundred and fifteen")
+	assert.Equal(t, expected, result)
+
+	expected = 104
+	result = CountLettersInString("AÁÅĆDΔEĔƐFĞHĦIÍJЙҖҘКĿMÑØΦPQŘŞŠTŦUÚVWXYÝŽαбcדΣεƒGнιjκlмиσρQяsтуυvωxчzאकbգԴΣϜհιյkլոpҩrՏτմվwхyzあ俄бхひสשָგم你여П")
+	assert.Equal(t, expected, result)
+}

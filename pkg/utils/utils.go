@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/big"
 	"strconv"
+	"unicode"
 )
 
 func ReturnFibonacciNumbersUntil(limit int) []int {
@@ -277,4 +278,147 @@ func FactorialBig(n int) (*big.Int, error) {
 		}
 	}
 	return result, nil
+}
+
+type numberToWrittenNumber map[string]string
+
+var numberMap = numberToWrittenNumber{
+	"0":   "zero",
+	"1":   "one",
+	"2":   "two",
+	"3":   "three",
+	"4":   "four",
+	"5":   "five",
+	"6":   "six",
+	"7":   "seven",
+	"8":   "eight",
+	"9":   "nine",
+	"10":  "ten",
+	"11":  "eleven",
+	"12":  "twelve",
+	"13":  "thirteen",
+	"14":  "fourteen",
+	"15":  "fifteen",
+	"16":  "sixteen",
+	"17":  "seventeen",
+	"18":  "eighteen",
+	"19":  "nineteen",
+	"20":  "twenty",
+	"30":  "thirty",
+	"40":  "forty",
+	"50":  "fifty",
+	"60":  "sixty",
+	"70":  "seventy",
+	"80":  "eighty",
+	"90":  "ninety",
+	"00":  "hundred",
+	"000": "thousand",
+}
+
+func CountLettersInString(s string) int {
+	count := 0
+	for _, char := range s {
+		if unicode.IsLetter(char) {
+			count++
+		}
+	}
+	return count
+}
+
+func ReturnNumberString(num int) string {
+	var currStr string
+	strNum := strconv.Itoa(num)
+	numLen := len(strNum)
+
+	if numLen == 0 {
+		return numberMap["0"]
+	}
+
+	if numLen == 1 {
+		return numberMap[strNum]
+	}
+
+	if numLen == 2 {
+		firstDigit := strNum[0]
+		secondDigit := strNum[1]
+		isSecondDigitZero := secondDigit == 48
+		// fmt.Println("secondDigit", secondDigit)
+		if isSecondDigitZero {
+			return numberMap[strNum]
+		}
+		if numberMap[strNum] != "" {
+			return numberMap[strNum]
+		}
+
+		switch firstDigit {
+		case '2':
+			currStr = fmt.Sprintf("%s %s", numberMap["20"], numberMap[string(secondDigit)])
+			break
+		case '3':
+			currStr = fmt.Sprintf("%s %s", numberMap["30"], numberMap[string(secondDigit)])
+			break
+		case '4':
+			currStr = fmt.Sprintf("%s %s", numberMap["40"], numberMap[string(secondDigit)])
+			break
+		case '5':
+			currStr = fmt.Sprintf("%s %s", numberMap["50"], numberMap[string(secondDigit)])
+			break
+		case '6':
+			currStr = fmt.Sprintf("%s %s", numberMap["60"], numberMap[string(secondDigit)])
+			break
+		case '7':
+			currStr = fmt.Sprintf("%s %s", numberMap["70"], numberMap[string(secondDigit)])
+			break
+		case '8':
+			currStr = fmt.Sprintf("%s %s", numberMap["80"], numberMap[string(secondDigit)])
+			break
+		case '9':
+			currStr = fmt.Sprintf("%s %s", numberMap["90"], numberMap[string(secondDigit)])
+			break
+		}
+	}
+
+	if numLen == 3 {
+		firstDigit := strNum[0]
+		twoLastDigitsStr := strNum[1:]
+		twoLastDigits, _ := strconv.Atoi(twoLastDigitsStr)
+		currStr = fmt.Sprintf("%s %s", numberMap[string(firstDigit)], numberMap["00"])
+
+		switch twoLastDigitsStr {
+		case "00":
+			break
+		default:
+			if numberMap[twoLastDigitsStr] != "" {
+				currStr = fmt.Sprintf("%s and %s", currStr, numberMap[twoLastDigitsStr])
+			} else {
+				currStr = fmt.Sprintf("%s and %s", currStr, ReturnNumberString(twoLastDigits))
+			}
+		}
+	}
+
+	if numLen == 4 {
+		firstDigit := strNum[0]
+		isSecondDigitZero := strNum[1] == 48
+		threeLastDigitsStr := strNum[1:]
+		threeLastDigits, _ := strconv.Atoi(threeLastDigitsStr)
+		currStr = fmt.Sprintf("%s %s", numberMap[string(firstDigit)], numberMap["000"])
+
+		switch threeLastDigitsStr {
+		case "000":
+			break
+		default:
+			if isSecondDigitZero {
+				currStr = fmt.Sprintf("%s and %s", currStr, ReturnNumberString(threeLastDigits))
+			} else {
+				currStr = fmt.Sprintf("%s %s", currStr, ReturnNumberString(threeLastDigits))
+			}
+		}
+	}
+	/* TODO
+	if numLen == 5 {
+		firstTwoDigits := strNum[0:2]
+		currStr = fmt.Sprintf("%s %s", numberMap[string(firstTwoDigits)], numberMap["000"])
+	}
+	*/
+	return currStr
 }
