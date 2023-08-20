@@ -431,3 +431,24 @@ func Problem16() int {
 	}
 	return result
 }
+
+
+// If the numbers to are written out in words: one, two, three, four, five, then there are 
+// 3+3+5+4+4 = 19 letters used in total.
+//
+// If all the numbers from 1 to 1000 (one thousand) inclusive were written out in words, how many letters would be used?
+//
+// NOTE: Do not count spaces or hyphens.
+//
+// For example, (three hundred and forty-two) contains letters and (one hundred and fifteen) contains letters.
+//
+// The use of "and" when writing out numbers is in compliance with British usage.
+func Problem17() int {
+	var sum int
+
+	for i := 1; i <= 1000; i++ {
+		currNum := utils.ReturnNumberString(i)
+		sum += utils.CountLettersInString(currNum)
+	}
+	return sum
+}
