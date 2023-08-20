@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"math/big"
 	"strconv"
 )
 
@@ -190,29 +191,90 @@ func FindAllProperDivisorsOf(num int) ([]int, error) {
 // Returns a sequence of numbers calculated according to the Collatz Conjecture
 // Source: en.wikipedia.org/wiki/Collatz_conjecture
 func FindCollatzSequenceOf(inputNumber int) []int {
-  sequence := []int{inputNumber}
-  num := inputNumber
+	sequence := []int{inputNumber}
+	num := inputNumber
 
-  for num > 1 {
-    if num % 2 == 0 {
+	for num > 1 {
+		if num%2 == 0 {
 			num /= 2
 		} else {
-			num = 3 * num + 1
+			num = 3*num + 1
 		}
-    sequence = append(sequence, num)
-  }
-  return sequence
+		sequence = append(sequence, num)
+	}
+	return sequence
 }
 
 // Returns the longest Collatz Sequence of all numbers under limit N
 func FindLongestCollatzSequenceUnder(limit int) []int {
-  var longestSequence []int
+	var longestSequence []int
 
-  for i := 1; i < limit; i++ {
-    currSequence := FindCollatzSequenceOf(i)
-    if (len(currSequence) > len(longestSequence)) {
-      longestSequence = currSequence
-    }
-  }
-  return longestSequence
+	for i := 1; i < limit; i++ {
+		currSequence := FindCollatzSequenceOf(i)
+		if len(currSequence) > len(longestSequence) {
+			longestSequence = currSequence
+		}
+	}
+	return longestSequence
+}
+
+func Factorial(num int) (int, error) {
+	var result int
+	// Errors and edge cases
+	if num <= 0 {
+		return 0, errors.New(fmt.Sprintf("invalid number. should be greater than zero: %v", num))
+	}
+	if num > 20 {
+		return 0, errors.New(fmt.Sprintf("result of %v! is too big for int/int32. use 'FactorialBig()' instead.", num))
+	}
+	if num == 1 {
+		return 1, nil
+	}
+	if num == 2 {
+		return 2, nil
+	}
+
+	for i := num; i > 1; i-- {
+		if i == num {
+			result += i * (i - 1)
+		} else {
+			result *= i - 1
+		}
+	}
+	return result, nil
+}
+
+func FactorialBig(n int) (*big.Int, error) {
+	num, result := new(big.Int), new(big.Int)
+	one := big.NewInt(1)
+
+	num.SetString(strconv.Itoa(n), 10) // setting num to value of n
+
+	isNSmallerOrEqualToZero := num.Sign() == -1 && num.Sign() == 0
+	isNOneOrTwo := num.Cmp(big.NewInt(1)) == 0 || num.Cmp(big.NewInt(2)) == 0
+
+	// Errors and edge cases
+	if isNSmallerOrEqualToZero {
+		return big.NewInt(0), errors.New(fmt.Sprintf("invalid number. should be greater than zero: %v", num))
+	}
+	if isNOneOrTwo {
+		return num, nil
+	}
+
+	for i := new(big.Int).Set(num); i.Cmp(one) > 0; i.Sub(i, one) {
+		isIEqualToNum := i.Cmp(num) == 0
+		if isIEqualToNum {
+			// Unlike in a normal for loop with int, here i can't be changed, so new variables are needed
+			iMinusOne := new(big.Int).Set(i)
+			iMinusOne.Sub(iMinusOne, one) // i-1
+			currI := new(big.Int).Set(i)
+			currI.Mul(i, iMinusOne) // i * (i-1)
+			result.Add(result, currI)
+		} else {
+			iMinusOne := new(big.Int).Set(i)
+			iMinusOne.Sub(iMinusOne, one) // i-1
+			result.Mul(result, iMinusOne)
+		}
+	}
+	return result, nil
 }
