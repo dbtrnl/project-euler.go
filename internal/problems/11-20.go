@@ -412,3 +412,22 @@ func Problem15() int {
 
 	return int(answer.Int64())
 }
+
+// Problem 16 - Power digit sum
+//
+// 2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
+//
+// What is the sum of the digits of the number 2^1000?
+func Problem16() int {
+	var exponent int64
+	var result int
+
+	sum, base, exponent := new(big.Int), big.NewInt(2), 1000
+	sum.Exp(base, big.NewInt(exponent), nil)
+
+	for _, digit := range sum.String() {
+		intDigit, _ := strconv.Atoi(string(digit))
+		result += intDigit
+	}
+	return result
+}
