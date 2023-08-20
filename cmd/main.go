@@ -9,7 +9,7 @@ import (
 	"github.com/dbtrnl/project-euler/golang/internal/problems"
 )
 
-var problemsSlice = []func()int {
+var problemsSlice = []func() int{
 	problems.Problem1,
 	problems.Problem2,
 	problems.Problem3,
@@ -24,6 +24,7 @@ var problemsSlice = []func()int {
 	problems.Problem12,
 	problems.Problem13,
 	problems.Problem14,
+	problems.Problem15,
 }
 
 func main() {
