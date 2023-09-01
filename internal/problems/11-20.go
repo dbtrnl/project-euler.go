@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/dbtrnl/project-euler/golang/internal/entities"
-	"github.com/dbtrnl/project-euler/golang/internal/input_data"
-	"github.com/dbtrnl/project-euler/golang/pkg/utils"
+	"github.com/dbtrnl/project-euler.go/internal/entities"
+	"github.com/dbtrnl/project-euler.go/internal/input_data"
+	"github.com/dbtrnl/project-euler.go/pkg/utils"
 )
 
 // Problem 11 - Largest product in a grid

@@ -1,4 +1,4 @@
-module github.com/dbtrnl/project-euler/golang
+module github.com/dbtrnl/project-euler.go
 
 go 1.20
 

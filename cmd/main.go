@@ -6,7 +6,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/dbtrnl/project-euler/golang/internal/problems"
+	"github.com/dbtrnl/project-euler.go/internal/problems"
 )
 
 var problemsSlice = []func() int{
@@ -33,7 +33,7 @@ var problemsSlice = []func() int{
 func main() {
 	for _, fn := range problemsSlice {
 		result := fn()
-		fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[2]
+		fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
 		fmt.Printf("Answer of '%s' is: %d\n", fnName, result)
 	}
 }
