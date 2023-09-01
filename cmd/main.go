@@ -27,6 +27,7 @@ var problemsSlice = []func() int{
 	problems.Problem15,
 	problems.Problem16,
 	problems.Problem17,
+	problems.Problem18,
 }
 
 func main() {
