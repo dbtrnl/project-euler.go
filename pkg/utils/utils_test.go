@@ -59,9 +59,55 @@ func TestFindAllPrimesSmallerThan(t *testing.T) {
 	assert.Equal(t, expected, FindAllPrimesSmallerThan(180))
 }
 
+func TestFindAllDivisorsOf(t *testing.T) {
+	expected := []int{}
+	result, err := FindAllDivisorsOf(0)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1}
+	result, err = FindAllDivisorsOf(1)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2}
+	result, err = FindAllDivisorsOf(2)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2, 3, 4, 6, 9, 12, 18, 36}
+	result, err = FindAllDivisorsOf(36)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200, 250, 500, 1000}
+	result, err = FindAllDivisorsOf(1000)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 7, 11, 13, 77, 91, 143, 1001}
+	result, err = FindAllDivisorsOf(1001)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1, 17, 59, 1003}
+	result, err = FindAllDivisorsOf(1003)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	result, err = FindAllDivisorsOf(-1)
+	assert.Nil(t, result)
+	assert.EqualError(t, err, "invalid value: -1")
+}
+
 func TestFindAllProperDivisorsOf(t *testing.T) {
-	expected := []int{1}
-	result, err := FindAllProperDivisorsOf(1)
+	expected := []int{}
+	result, err := FindAllProperDivisorsOf(0)
+	assert.Nil(t, err)
+	assert.ElementsMatch(t, expected, result)
+
+	expected = []int{1}
+	result, err = FindAllProperDivisorsOf(1)
 	assert.Nil(t, err)
 	assert.ElementsMatch(t, expected, result)
 
@@ -70,13 +116,8 @@ func TestFindAllProperDivisorsOf(t *testing.T) {
 	assert.Nil(t, err)
 	assert.ElementsMatch(t, expected, result)
 
-	expected = []int{1, 2, 4}
-	result, err = FindAllProperDivisorsOf(8)
-	assert.Nil(t, err)
-	assert.ElementsMatch(t, expected, result)
-
-	expected = []int{1, 2, 4, 5, 10, 20, 25, 50}
-	result, err = FindAllProperDivisorsOf(100)
+	expected = []int{1, 2, 3, 4, 6, 9, 12, 18, 36}
+	result, err = FindAllDivisorsOf(36)
 	assert.Nil(t, err)
 	assert.ElementsMatch(t, expected, result)
 
@@ -234,5 +275,48 @@ func TestCountLettersInString(t *testing.T) {
 
 	expected = 104
 	result = CountLettersInString("AÁÅĆDΔEĔƐFĞHĦIÍJЙҖҘКĿMÑØΦPQŘŞŠTŦUÚVWXYÝŽαбcדΣεƒGнιjκlмиσρQяsтуυvωxчzאकbգԴΣϜհιյkլոpҩrՏτմվwхyzあ俄бхひสשָგم你여П")
+	assert.Equal(t, expected, result)
+}
+
+func TestFindAndSumAllProperDivisorsOf(t *testing.T) {
+	expected := 55
+	result, err := FindAndSumAllProperDivisorsOf(36)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = 185
+	result, err = FindAndSumAllProperDivisorsOf(2839)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = 14304
+	result, err = FindAndSumAllProperDivisorsOf(5040)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+}
+
+func TestIsNumberAmicable(t *testing.T) {
+	expected := &AmicableNumberObject{
+		IsAmicable: false,
+		Numbers:    [2]int{0, 0},
+	}
+	result, err := IsNumberAmicable(6)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = &AmicableNumberObject{
+		IsAmicable: true,
+		Numbers:    [2]int{220, 284},
+	}
+	result, err = IsNumberAmicable(220)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = &AmicableNumberObject{
+		IsAmicable: false,
+		Numbers:    [2]int{0, 0},
+	}
+	result, err = IsNumberAmicable(221)
+	assert.Nil(t, err)
 	assert.Equal(t, expected, result)
 }

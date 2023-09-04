@@ -171,17 +171,43 @@ func GenerateTriangularNumber(nth int) int {
 	return nth * (nth + 1) / 2
 }
 
-// Finds all the proper divisors of a number except the number itself.
-func FindAllProperDivisorsOf(num int) ([]int, error) {
+// Finds all the proper divisors of a number including the number itself.
+func FindAllDivisorsOf(num int) ([]int, error) {
 	if num < 0 {
 		return nil, errors.New(fmt.Sprintf("invalid value: %v", num))
 	}
 	divisors := []int{}
 
-	for i := 1; i*i <= num; i++ {
+	if num == 0 {
+		return divisors, nil
+	}
+	divisors = append(divisors, 1) // 1 is a divisor of every number > 0
+
+	for i := 2; i <= num; i++ {
 		if num%i == 0 {
 			divisors = append(divisors, i)
-			if i != num/i && num/i != num {
+		}
+	}
+	return divisors, nil
+}
+
+// Finds all the divisors of a number except the number itself.
+func FindAllProperDivisorsOf(num int) ([]int, error) {
+	if num < 0 {
+		return nil, errors.New(fmt.Sprintf("invalid value: %v", num))
+	}
+	divisors := []int{}
+	numSqrt := int(math.Sqrt(float64(num)))
+
+	if num == 0 {
+		return divisors, nil
+	}
+	divisors = append(divisors, 1) // 1 is a divisor of every number > 0
+
+	for i := 2; i <= numSqrt; i++ {
+		if num%i == 0 {
+			divisors = append(divisors, i)
+			if i != num/i {
 				divisors = append(divisors, num/i)
 			}
 		}
@@ -421,4 +447,63 @@ func ReturnNumberString(num int) string {
 	}
 	*/
 	return currStr
+}
+
+func FindAndSumAllProperDivisorsOf(num int) (int, error) {
+	if num == 0 {
+		return 0, nil
+	}
+	if num == 1 {
+		return 0, nil
+	}
+	if num == 2 {
+		return 1, nil
+	}
+
+	sum := 0
+	properDivisors, err := FindAllProperDivisorsOf(num)
+	if err != nil {
+		return 0, errors.New(fmt.Sprintf("error on FindAllProperDivisorsOf(): %v", err.Error()))
+	}
+	for _, n := range properDivisors {
+		sum += n
+	}
+	return sum, nil
+}
+
+type AmicableNumberObject struct {
+	IsAmicable bool
+	Numbers    [2]int
+}
+
+func IsNumberAmicable(num int) (*AmicableNumberObject, error) {
+	result := AmicableNumberObject{
+		IsAmicable: false,
+		Numbers:    [2]int{},
+	}
+	if num < 0 {
+		return &result, errors.New(fmt.Sprintf("invalid number %v. should be greater than zero.", num))
+	}
+
+	sumDiv, err := FindAndSumAllProperDivisorsOf(num)
+	if err != nil {
+		return &result, errors.New(fmt.Sprintf("error on FindAndSumAllProperDivisorsOf(): %v", err.Error()))
+	}
+	sumDivSum, err := FindAndSumAllProperDivisorsOf(sumDiv)
+	if err != nil {
+		return &result, errors.New(fmt.Sprintf("error on FindAndSumAllProperDivisorsOf(): %v", err.Error()))
+	}
+	if sumDivSum == num && sumDiv != num {
+		result.IsAmicable = true
+		result.Numbers = [2]int{num, sumDiv}
+		return &result, nil
+	}
+
+	// if sumDivSum, err := FindAndSumAllProperDivisorsOf(sumDiv); (err != nil && sumDivSum == num) {
+	// 	result.IsAmicable = true
+	// 	result.Numbers = [2]int{num, sumDiv}
+	// 	return &result, nil
+	// }
+
+	return &result, nil
 }
