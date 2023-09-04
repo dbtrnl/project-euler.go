@@ -433,6 +433,8 @@ func Problem16() int {
 	return result
 }
 
+// Problem 17 - Number Letter Counts
+//
 // If the numbers to are written out in words: one, two, three, four, five, then there are
 // 3+3+5+4+4 = 19 letters used in total.
 //
@@ -537,7 +539,7 @@ func Problem18() int {
 	return answer
 }
 
-// **Problem 19 - Counting Sundays**
+// Problem 19 - Counting Sundays
 //
 // You are given the following information, but you may prefer to do some research for yourself.
 //
@@ -566,7 +568,7 @@ func Problem19() int {
 	return answer
 }
 
-// **Problem 20 - Factorial digit sum**
+// Problem 20 - Factorial digit sum
 //
 // n! means n × (n − 1) × ... × 3 × 2 × 1
 //
