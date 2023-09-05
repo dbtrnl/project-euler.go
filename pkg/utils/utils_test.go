@@ -320,3 +320,11 @@ func TestIsNumberAmicable(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, expected, result)
 }
+
+func TestCalculateStringScore(t *testing.T) {
+	expected := 27
+	result := CalculateStringScore("az")
+	assert.Equal(t, expected, result)
+	result = CalculateStringScore(" 23 $;,. AZ ")
+	assert.Equal(t, expected, result)
+}

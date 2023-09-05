@@ -6,6 +6,7 @@ import (
 	"math"
 	"math/big"
 	"strconv"
+	"strings"
 	"unicode"
 )
 
@@ -498,12 +499,18 @@ func IsNumberAmicable(num int) (*AmicableNumberObject, error) {
 		result.Numbers = [2]int{num, sumDiv}
 		return &result, nil
 	}
-
-	// if sumDivSum, err := FindAndSumAllProperDivisorsOf(sumDiv); (err != nil && sumDivSum == num) {
-	// 	result.IsAmicable = true
-	// 	result.Numbers = [2]int{num, sumDiv}
-	// 	return &result, nil
-	// }
-
 	return &result, nil
+}
+
+// Calculate
+func CalculateStringScore(str string) int {
+	score, strUpper := 0, strings.ToUpper(str)
+	for _, char := range strUpper {
+		charIsNotUppercaseLetter := char < 65 || char > 90
+		if charIsNotUppercaseLetter {
+			continue
+		}
+		score += int(char - 64)
+	}
+	return score
 }

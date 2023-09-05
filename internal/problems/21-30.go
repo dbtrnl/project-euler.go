@@ -1,6 +1,11 @@
 package problems
 
 import (
+	"fmt"
+	"io/ioutil"
+	"sort"
+	"strings"
+
 	"github.com/dbtrnl/project-euler.go/pkg/utils"
 )
 
@@ -32,4 +37,33 @@ func Problem21() int {
 		answer += num
 	}
 	return answer
+}
+
+// Problem 22 - Names scores
+//
+// Using a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order.
+//
+// Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.
+//
+// For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list.
+// So, COLIN would obtain a score of 938 × 53 = 49714.
+//
+// What is the total of all the name scores in the file?
+func Problem22() int {
+	var totalScore, strScore int
+	filePath := "./internal/input_data/problem22_input.txt"
+	f, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		fmt.Printf("error reading file %s: %v\n", filePath, err)
+		return 0
+	}
+	names := strings.Split(strings.ReplaceAll(string(f), `"`, ""), ",")
+	sort.Strings(names)
+
+	for i, n := range names {
+		pos := i + 1
+		strScore = utils.CalculateStringScore(n)
+		totalScore += strScore * pos
+	}
+	return totalScore
 }
