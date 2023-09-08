@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"time"
 
 	"github.com/dbtrnl/project-euler.go/internal/problems"
 )
@@ -37,9 +38,13 @@ var problemsSlice = []func() int{
 }
 
 func main() {
+	startTime := time.Now()
+
 	for _, fn := range problemsSlice {
 		result := fn()
 		fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
 		fmt.Printf("Answer of '%s' is: %d\n", fnName, result)
 	}
+	elapsedTime := time.Now().Sub(startTime).Seconds()
+	fmt.Printf("-----\n%v functions executed in %.2f seconds\n", len(problemsSlice), elapsedTime)
 }
