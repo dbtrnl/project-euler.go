@@ -514,3 +514,68 @@ func CalculateStringScore(str string) int {
 	}
 	return score
 }
+
+// Returns the "abundancy" or "deficiency" of a number
+// If the sum of a number's proper divisors is > the number, it is "abundant"
+//
+// If the sum of a number's proper divisors is < the number, it is "deficient"
+//
+// If the sum of a number's proper divisors is = the number, it is "perfect"
+func GetNumberAbundancy(n int) (string, error) {
+	var answer string
+	if n <= 0 {
+		return answer, errors.New(fmt.Sprintf("number: %v must be >= 0.", n))
+	}
+	sumOfDivisors, _ := FindAndSumAllProperDivisorsOf(n)
+
+	if sumOfDivisors == n {
+		answer = "perfect"
+	}
+	if sumOfDivisors < n {
+		answer = "deficient"
+	}
+	if sumOfDivisors > n {
+		answer = "abundant"
+	}
+	return answer, nil
+}
+
+// Returns all the abundant numbers until or equal to limit N
+func FindAbundantNumbersUntil(limit int) ([]int, error) {
+	var numSlice []int
+	if limit <= 0 {
+		return numSlice, errors.New(fmt.Sprintf("number: %v must be >= 0.", limit))
+	}
+	for num := 1; num <= limit; num++ {
+		abundancy, err := GetNumberAbundancy(num)
+		if err != nil {
+			return numSlice, err
+		}
+		if abundancy == "abundant" {
+			numSlice = append(numSlice, num)
+		}
+	}
+	return numSlice, nil
+}
+
+// Returns the unique sums of all subsets in a number set
+// Example: in a number set [1, 2, 3, 4], possible unique sums are:
+//
+// [1+1], [1+2], [1+3], [1+4], [2+4], [3+4], [4+4]
+//
+// Since [1+2] == [2+1], only the first sum is included in the final number set.
+//
+// Any sum > limit is discarded from the final number set.
+func FindUniqueCombinatorialSums(numSlice []int, limit int) map[int]bool {
+	numSet := make(map[int]bool)
+	for _, numOuter := range numSlice {
+		for _, numInner := range numSlice {
+			currNum := numOuter + numInner
+			if numSet[currNum] || currNum > limit {
+				continue
+			}
+			numSet[currNum] = true
+		}
+	}
+	return numSet
+}

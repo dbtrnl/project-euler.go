@@ -328,3 +328,68 @@ func TestCalculateStringScore(t *testing.T) {
 	result = CalculateStringScore(" 23 $;,. AZ ")
 	assert.Equal(t, expected, result)
 }
+
+func TestGetNumberAbundancy(t *testing.T) {
+	expected := "abundant"
+	result, err := GetNumberAbundancy(12)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+	result, err = GetNumberAbundancy(5775)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = "deficient"
+	result, err = GetNumberAbundancy(10)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+	result, err = GetNumberAbundancy(13)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = "perfect"
+	result, err = GetNumberAbundancy(28)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+	result, err = GetNumberAbundancy(33550336)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+	result, err = GetNumberAbundancy(137438691328)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	result, err = GetNumberAbundancy(-1)
+	assert.Equal(t, result, "")
+	assert.EqualError(t, err, "number: -1 must be >= 0.")
+}
+
+func TestFindAbundantNumbersUntil(t *testing.T) {
+	expected := []int{12, 18, 20, 24, 30, 36, 40, 42, 48, 54}
+	result, err := FindAbundantNumbersUntil(54)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	expected = []int{12, 18, 20, 24, 30, 36, 40, 42, 48, 54, 56, 60, 66, 70, 72, 78, 80, 84, 88, 90, 96, 100, 102, 104, 108, 112,
+		114, 120, 126, 132, 138, 140, 144, 150, 156, 160, 162, 168, 174, 176, 180, 186, 192, 196, 198, 200, 204, 208, 210, 216, 220,
+		222, 224, 228, 234, 240, 246, 252, 258, 260, 264, 270}
+	result, err = FindAbundantNumbersUntil(270)
+	assert.Nil(t, err)
+	assert.Equal(t, expected, result)
+
+	result, err = FindAbundantNumbersUntil(-1)
+	assert.Nil(t, result)
+	assert.EqualError(t, err, "number: -1 must be >= 0.")
+}
+
+func TestFindUniqueCombinatorialSums(t *testing.T) {
+	expected := map[int]bool(map[int]bool{2: true, 3: true, 4: true, 5: true, 6: true, 7: true, 8: true})
+	result := FindUniqueCombinatorialSums([]int{1, 2, 3, 4}, 999)
+	assert.Equal(t, expected, result)
+
+	expected = map[int]bool(map[int]bool{2: true, 3: true, 4: true, 5: true, 6: true, 7: true})
+	result = FindUniqueCombinatorialSums([]int{1, 2, 3, 4}, 7)
+	assert.Equal(t, expected, result)
+
+	expected = map[int]bool(map[int]bool{})
+	result = FindUniqueCombinatorialSums([]int{1, 2, 3, 4}, 1)
+	assert.Equal(t, expected, result)
+}
