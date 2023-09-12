@@ -5,12 +5,13 @@ import (
 	"reflect"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dbtrnl/project-euler.go/internal/problems"
 )
 
-var problemsSlice = []func() int{
+var problemsSlice = []func(*sync.WaitGroup, chan<- int){
 	problems.Problem1,
 	problems.Problem2,
 	problems.Problem3,
@@ -38,13 +39,19 @@ var problemsSlice = []func() int{
 }
 
 func main() {
-	startTime := time.Now()
+	var wg sync.WaitGroup
+	startTime, probLen := time.Now(), len(problemsSlice)
+	answerChan := make(chan int, probLen)
+	wg.Add(probLen)
 
 	for _, fn := range problemsSlice {
-		result := fn()
-		fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
-		fmt.Printf("Answer of '%s' is: %d\n", fnName, result)
+		go func(fn func(*sync.WaitGroup, chan<- int)) {
+			fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
+			fn(&wg, answerChan)
+			fmt.Printf("Answer of '%s' is: %d\n", fnName, <-answerChan)
+		}(fn)
 	}
+	wg.Wait()
 	elapsedTime := time.Now().Sub(startTime).Seconds()
-	fmt.Printf("-----\n%v functions executed in %.2f seconds\n", len(problemsSlice), elapsedTime)
+	fmt.Printf("-----\n%v functions executed in %.2f seconds\n", probLen, elapsedTime)
 }

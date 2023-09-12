@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"io/ioutil"
 	"strings"
+	"sync"
 
 	"github.com/dbtrnl/project-euler.go/internal/entities"
 	"github.com/dbtrnl/project-euler.go/pkg/utils"
 )
 
-func Problem67() int {
+func Problem67(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var trData [][]int
 	var trRow []int
 	var answer int
@@ -18,7 +20,7 @@ func Problem67() int {
 	fileContents, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		fmt.Println("Error reading file:", err)
-		return 0
+		ch <- 0
 	}
 	// Assembling the triangle
 	input := string(fileContents)
@@ -51,5 +53,5 @@ func Problem67() int {
 		panic(err)
 	}
 	answer = triangle.FindMaximumSumPath()
-	return answer
+	ch <- answer
 }
