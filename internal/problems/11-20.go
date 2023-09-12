@@ -4,6 +4,7 @@ import (
 	"math/big"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/dbtrnl/project-euler.go/internal/entities"
@@ -58,7 +59,8 @@ import (
 // The product of these numbers is 26 × 63 × 78 × 14 = 1788696.
 //
 // What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?
-func Problem11() int {
+func Problem11(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var currLargestProduct int
 
 	// Normalizing the problem input data
@@ -115,7 +117,7 @@ func Problem11() int {
 		}
 	}
 
-	return currLargestProduct
+	ch <- currLargestProduct
 }
 
 // Problem 12 - Highly divisible triangular number
@@ -144,7 +146,8 @@ func Problem11() int {
 // We can see that 28 is the first triangle number to have over five divisors.
 //
 // What is the value of the first triangle number to have over five hundred divisors?
-func Problem12() int {
+func Problem12(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	limit := 1000000
 	result := 0
 	for i := 0; i <= limit; i++ {
@@ -155,7 +158,7 @@ func Problem12() int {
 			break
 		}
 	}
-	return result
+	ch <- result
 }
 
 // Problem 13 - Large sum
@@ -361,7 +364,8 @@ func Problem12() int {
 // 53503534226472524250874054075591789781264330331690
 //
 // Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
-func Problem13() int {
+func Problem13(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	result, num := new(big.Int), new(big.Int)
 	input := input_data.Problem13Input
 
@@ -370,7 +374,7 @@ func Problem13() int {
 		result = result.Add(result, num)
 	}
 	resultStr, _ := strconv.Atoi(result.String()[0:10])
-	return resultStr
+	ch <- resultStr
 }
 
 // Problem 14 - Longest Collatz sequence
@@ -389,11 +393,12 @@ func Problem13() int {
 // Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.
 //
 // Which starting number, under one million, produces the longest chain?
-func Problem14() int {
+func Problem14(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	num_limit := 1000000
 	sequence := utils.FindLongestCollatzSequenceUnder(num_limit)
 	result := sequence[0]
-	return result
+	ch <- result
 }
 
 // Problem 15 - Lattice paths
@@ -402,7 +407,8 @@ func Problem14() int {
 // there are exactly 6 routes to the bottom right corner.
 //
 // How many such routes are there through a 20×20 grid?
-func Problem15() int {
+func Problem15(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	gridRowSize, gridColumnSize := 20, 20
 
 	facRowCol, _ := utils.FactorialBig(gridRowSize + gridColumnSize)
@@ -411,7 +417,7 @@ func Problem15() int {
 	answer := facRowCol.Div(facRowCol, facRow)
 	answer = answer.Div(answer, facCol)
 
-	return int(answer.Int64())
+	ch <- int(answer.Int64())
 }
 
 // Problem 16 - Power digit sum
@@ -419,7 +425,8 @@ func Problem15() int {
 // 2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
 //
 // What is the sum of the digits of the number 2^1000?
-func Problem16() int {
+func Problem16(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var exponent int64
 	var result int
 
@@ -430,7 +437,7 @@ func Problem16() int {
 		intDigit, _ := strconv.Atoi(string(digit))
 		result += intDigit
 	}
-	return result
+	ch <- result
 }
 
 // Problem 17 - Number Letter Counts
@@ -445,14 +452,15 @@ func Problem16() int {
 // For example, (three hundred and forty-two) contains letters and (one hundred and fifteen) contains letters.
 //
 // The use of "and" when writing out numbers is in compliance with British usage.
-func Problem17() int {
+func Problem17(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var sum int
 
 	for i := 1; i <= 1000; i++ {
 		currNum := utils.ReturnNumberString(i)
 		sum += utils.CountLettersInString(currNum)
 	}
-	return sum
+	ch <- sum
 }
 
 // Problem 18 - Maximum Path Sum I
@@ -501,7 +509,8 @@ func Problem17() int {
 // 04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
 //
 // NOTE: As there are only 16384 routes, it is possible to solve this problem by trying every route. However, Problem 67, is the same challenge with a triangle containing one-hundred rows; it cannot be solved by brute force, and requires a clever method! ;o)
-func Problem18() int {
+func Problem18(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var trData [][]int
 	var trRow []int
 	var answer int
@@ -536,7 +545,7 @@ func Problem18() int {
 		panic(err)
 	}
 	answer = triangle.FindMaximumSumPath()
-	return answer
+	ch <- answer
 }
 
 // Problem 19 - Counting Sundays
@@ -554,7 +563,8 @@ func Problem18() int {
 // - A leap year occurs on any year evenly divisible by 4, but not on a century unless it is divisible by 400.
 //
 // How many Sundays fell on the first of the month during the twentieth century (1 Jan 1901 to 31 Dec 2000)?
-func Problem19() int {
+func Problem19(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	start, end, answer := 1901, 2000, 0
 
 	for year := start; year <= end; year++ {
@@ -565,7 +575,7 @@ func Problem19() int {
 			}
 		}
 	}
-	return answer
+	ch <- answer
 }
 
 // Problem 20 - Factorial digit sum
@@ -575,7 +585,8 @@ func Problem19() int {
 // For example, 10! = 10 × 9 × ... × 3 × 2 × 1 = 3628800, and the sum of the digits in the number 10! is 3 + 6 + 2 + 8 + 8 + 0 + 0 = 27.
 //
 // Find the sum of the digits in the number 100!
-func Problem20() int {
+func Problem20(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var answer int
 	oneHundredFac, _ := utils.FactorialBig(100)
 	oneHundredFacStr := oneHundredFac.String()
@@ -583,5 +594,5 @@ func Problem20() int {
 	for _, rune := range oneHundredFacStr {
 		answer += int(rune - '0')
 	}
-	return answer
+	ch <- answer
 }

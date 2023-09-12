@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"sort"
 	"strings"
+	"sync"
 
 	"github.com/dbtrnl/project-euler.go/pkg/utils"
 )
@@ -20,7 +21,8 @@ import (
 // The proper divisors of 284 are 1, 2, 4, 71 and 142; so d(284) = 220.
 //
 // Evaluate the sum of all the amicable numbers under 10000.
-func Problem21() int {
+func Problem21(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var answer int
 	amicableNums := make(map[int]bool)
 	for i := 1; i <= 10000; i++ {
@@ -36,7 +38,7 @@ func Problem21() int {
 	for num, _ := range amicableNums {
 		answer += num
 	}
-	return answer
+	ch <- answer
 }
 
 // Problem 22 - Names scores
@@ -49,13 +51,14 @@ func Problem21() int {
 // So, COLIN would obtain a score of 938 × 53 = 49714.
 //
 // What is the total of all the name scores in the file?
-func Problem22() int {
+func Problem22(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var totalScore, strScore int
 	filePath := "./internal/input_data/problem22_input.txt"
 	f, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		fmt.Printf("error reading file %s: %v\n", filePath, err)
-		return 0
+		ch <- 0
 	}
 	names := strings.Split(strings.ReplaceAll(string(f), `"`, ""), ",")
 	sort.Strings(names)
@@ -65,7 +68,7 @@ func Problem22() int {
 		strScore = utils.CalculateStringScore(n)
 		totalScore += strScore * pos
 	}
-	return totalScore
+	ch <- totalScore
 }
 
 // Problem 23 - Non-abundant sums
@@ -82,7 +85,8 @@ func Problem22() int {
 // the greatest number that cannot be expressed as the sum of two abundant numbers is less than this limit.
 //
 // Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
-func Problem23() int {
+func Problem23(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	var answer int
 	limit := 28123
 	abundantNums, _ := utils.FindAbundantNumbersUntil(limit)
@@ -95,5 +99,5 @@ func Problem23() int {
 		}
 		answer += i
 	}
-	return answer
+	ch <- answer
 }

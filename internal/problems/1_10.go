@@ -1,6 +1,8 @@
 package problems
 
 import (
+	"sync"
+
 	"github.com/dbtrnl/project-euler.go/internal/entities"
 	"github.com/dbtrnl/project-euler.go/internal/input_data"
 	"github.com/dbtrnl/project-euler.go/pkg/utils"
@@ -12,8 +14,9 @@ import (
 // The sum of these multiples is 23.
 //
 // Find the sum of all the multiples of 3 or 5 below 1000.
-func Problem1() int {
-	limit, multiples, result := 1000, []int{}, 0
+func Problem1(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
+	limit, multiples, answer := 1000, []int{}, 0
 
 	for num := 0; num < limit; num++ {
 		if num%3 == 0 || num%5 == 0 {
@@ -21,9 +24,13 @@ func Problem1() int {
 		}
 	}
 	for _, num := range multiples {
-		result += num
+		answer += num
 	}
-	return result
+	// pc, _, _, _ := runtime.Caller(1)
+	// name := runtime.FuncForPC(pc).Name()
+	// fnName := runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
+	// fmt.Println(name, fnName)
+	ch <- answer
 }
 
 // Problem 2 - Even Fibonacci Numbers
@@ -34,17 +41,18 @@ func Problem1() int {
 // 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...
 //
 // By considering the terms in the Fibonacci sequence whose values do not exceed four million, find the sum of the even-valued terms.
-func Problem2() int {
-	var sum int
+func Problem2(wg *sync.WaitGroup, ch chan<- int) {
+	var answer int
+	defer wg.Done()
 	limit := 4000000
 	fibArr := utils.ReturnFibonacciNumbersUntil(limit)
 
 	for i := 0; i <= len(fibArr)-1; i++ {
 		if fibArr[i]%2 == 0 {
-			sum += fibArr[i]
+			answer += fibArr[i]
 		}
 	}
-	return sum
+	ch <- answer
 }
 
 // Problem 3 - Largest Prime Factor
@@ -52,9 +60,11 @@ func Problem2() int {
 // The prime factors of 13195 are 5, 7, 13 and 29.
 //
 // What is the largest prime factor of the number 600851475143?
-func Problem3() int {
+func Problem3(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	input := 600851475143
-	return utils.FindLargestPrimeFactor(input)
+	answer := utils.FindLargestPrimeFactor(input)
+	ch <- answer
 }
 
 // Problem 4 - Largest palindrome product
@@ -63,7 +73,8 @@ func Problem3() int {
 // The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
 //
 // Find the largest palindrome made from the product of two 3-digit numbers
-func Problem4() int {
+func Problem4(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	currentLargestPalindrome := 0
 
 	for i := 100; i < 1000; i++ {
@@ -74,7 +85,7 @@ func Problem4() int {
 			}
 		}
 	}
-	return currentLargestPalindrome
+	ch <- currentLargestPalindrome
 }
 
 // Problem 5 - Smallest multiple
@@ -82,7 +93,8 @@ func Problem4() int {
 // 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
 //
 // What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
-func Problem5() int {
+func Problem5(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	min_div, max_div := 1, 20
 
 	currNum := 1
@@ -96,7 +108,7 @@ func Problem5() int {
 			currNum++
 		}
 	}
-	return currNum
+	ch <- currNum
 }
 
 // Problem 6 - Sum square difference
@@ -107,12 +119,13 @@ func Problem5() int {
 //
 // Hence the difference between the sum of the squares of the first ten natural numbers and the square of the sum is 3025-385=2640.
 // Find the difference between the sum of the squares of the first one hundred natural numbers and the square of the sum.
-func Problem6() int {
+func Problem6(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	sumOfSquares := utils.FindSumOfNumberIntervalSquares(1, 100)
 	squareOfSum := utils.FindSquareOfNumberIntervalSum(1, 100)
 	answer := squareOfSum - sumOfSquares
 
-	return answer
+	ch <- answer
 }
 
 // Problem 7 - 10001st prime
@@ -121,10 +134,11 @@ func Problem6() int {
 // 2, 3, 5, 7, 11, and 13, we can see that the 6th prime is 13.
 //
 // What is the 10.001st prime number?
-func Problem7() int {
+func Problem7(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	nth := 10001
 	answer := utils.FindNthPrime(nth)
-	return answer
+	ch <- answer
 }
 
 // Problem 8 - Largest product in a series
@@ -133,7 +147,8 @@ func Problem7() int {
 // Find the thirteen adjacent digits in the 1000-digit number that have the greatest product.
 //
 // What is the value of this product?
-func Problem8() int {
+func Problem8(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	series_size, greatestProduct := 13, 0
 
 	for j := 0; j < len(input_data.Problem8Input)-series_size-1; j++ {
@@ -144,7 +159,7 @@ func Problem8() int {
 			greatestProduct = currentSeriesSum
 		}
 	}
-	return greatestProduct
+	ch <- greatestProduct
 }
 
 // Problem 9 - Special pythagorean triplet
@@ -156,7 +171,8 @@ func Problem8() int {
 // There exists exactly one Pythagorean triplet for which a + b + c = 1000.
 //
 // Find the product abc.
-func Problem9() int {
+func Problem9(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	max_iterations := 1000
 	var newTripletSet entities.TripletSet
 	answer := 0
@@ -171,7 +187,7 @@ func Problem9() int {
 			}
 		}
 	}
-	return answer
+	ch <- answer
 }
 
 // Problem 10 - Summation of primes
@@ -179,7 +195,8 @@ func Problem9() int {
 // The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
 //
 // Find the sum of all the primes below two million
-func Problem10() int {
+func Problem10(wg *sync.WaitGroup, ch chan<- int) {
+	defer wg.Done()
 	max_prime_value := 2000000
 	answer := 0
 	primesArray := utils.FindAllPrimesSmallerThan(max_prime_value)
@@ -187,5 +204,5 @@ func Problem10() int {
 	for _, num := range primesArray {
 		answer += num
 	}
-	return answer
+	ch <- answer
 }
