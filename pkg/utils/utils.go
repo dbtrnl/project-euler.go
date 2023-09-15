@@ -579,3 +579,43 @@ func FindUniqueCombinatorialSums(numSlice []int, limit int) map[int]bool {
 	}
 	return numSet
 }
+
+func FibonacciSequence(nth int) ([]int, error) {
+	if nth < 0 {
+		return []int{}, errors.New(fmt.Sprintf("number: %v must be >= 0.", nth))
+	}
+	if nth > 92 {
+		return []int{}, errors.New(fmt.Sprintf("number: %v must be >= 0 and <= 92, as it would overflow int64", nth))
+	}
+	if nth == 0 {
+		return []int{0}, nil
+	}
+	if nth == 1 {
+		return []int{0, 1}, nil
+	}
+	fibSlice := []int{0, 1}
+	for i := 2; i <= nth; i++ {
+		currNum := fibSlice[len(fibSlice)-1] + fibSlice[len(fibSlice)-2]
+		fibSlice = append(fibSlice, currNum)
+	}
+	return fibSlice, nil
+}
+
+func FibonacciSequenceBigInt(nth int) ([]*big.Int, error) {
+	if nth < 0 {
+		return nil, errors.New(fmt.Sprintf("number: %v must be >= 0.", nth))
+	}
+	if nth == 0 {
+		return []*big.Int{big.NewInt(0)}, nil
+	}
+	if nth == 1 {
+		return []*big.Int{big.NewInt(0), big.NewInt(1)}, nil
+	}
+	fibSlice := []*big.Int{big.NewInt(0), big.NewInt(1)}
+	for i := 2; i <= nth; i++ {
+		currNum := new(big.Int).Set(fibSlice[len(fibSlice)-1])
+		sum := currNum.Add(currNum, fibSlice[len(fibSlice)-2])
+		fibSlice = append(fibSlice, sum)
+	}
+	return fibSlice, nil
+}
