@@ -35,6 +35,13 @@ var problemsSlice = []func(*sync.WaitGroup, chan<- int){
 	problems.Problem21,
 	problems.Problem22,
 	problems.Problem23,
+	// problems.Problem24,
+	problems.Problem25,
+	// problems.Problem26,
+	// problems.Problem27,
+	// problems.Problem28,
+	// problems.Problem29,
+	// problems.Problem30,
 	problems.Problem67,
 }
 
