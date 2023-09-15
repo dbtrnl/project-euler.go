@@ -1,2 +1,4 @@
 mem.txt
 benchmark.go
+coverage.out
+coverage.html

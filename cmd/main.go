@@ -48,7 +48,7 @@ func main() {
 		go func(fn func(*sync.WaitGroup, chan<- int)) {
 			fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
 			fn(&wg, answerChan)
-			fmt.Printf("Answer of '%s' is: %d\n", fnName, <-answerChan)
+			fmt.Printf("%s answer is: %d\n", fnName, <-answerChan)
 		}(fn)
 	}
 	wg.Wait()
