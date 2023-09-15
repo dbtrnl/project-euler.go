@@ -619,3 +619,30 @@ func FibonacciSequenceBigInt(nth int) ([]*big.Int, error) {
 	}
 	return fibSlice, nil
 }
+
+func FindRecurringSequence(numerator, denominator int) string {
+	result := ""
+	if numerator == denominator {
+		return result
+	}
+	sequenceMap := make(map[int]int)
+	remainder := numerator % denominator // Find first remainder
+
+	// Keep finding remainder until either remainder becomes 0 or repeats
+	for remainder != 0 && sequenceMap[remainder] == 0 {
+		// Store this remainder
+		sequenceMap[remainder] = len(result)
+		remainder *= 10
+		resPart := remainder / denominator // Append remainder / denominator to result
+		result += fmt.Sprintf("%d", resPart)
+		remainder %= denominator // Update remainder
+	}
+
+	if remainder == 0 { // If 1/10, remainder is zero... but 1 should be returned.
+		return ""
+	} else if sequenceMap[remainder] != 0 {
+		return result[sequenceMap[remainder]:]
+	} else {
+		return ""
+	}
+}

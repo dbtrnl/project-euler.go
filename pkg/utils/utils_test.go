@@ -476,3 +476,29 @@ func TestFibonacciSequenceBigInt(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, expected, result)
 }
+
+func TestFindRecurringSequence(t *testing.T) {
+	expected := ""
+	result := FindRecurringSequence(1, 1)
+	assert.Equal(t, expected, result)
+
+	expected = "3"
+	result = FindRecurringSequence(1, 3)
+	assert.Equal(t, expected, result)
+
+	// expected = "142857"
+	// result = FindRecurringSequence(1, 7)
+	// assert.Equal(t, expected, result)
+
+	expected = "1"
+	result = FindRecurringSequence(1, 9)
+	assert.Equal(t, expected, result)
+
+	expected = "054"
+	result = FindRecurringSequence(1, 185)
+	assert.Equal(t, expected, result)
+
+	// expected = "012345679"
+	// result = FindRecurringSequence(1, 81)
+	// assert.Equal(t, expected, result)
+}
