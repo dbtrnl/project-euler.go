@@ -646,3 +646,9 @@ func FindRecurringSequence(numerator, denominator int) string {
 		return ""
 	}
 }
+
+// Func used in problem 27
+func PolinomialPrimeFormula(n, a, b int) int {
+	nSquared := int(math.Pow(float64(n), 2))
+	return nSquared + (a * n) + b
+}

@@ -17,7 +17,7 @@ var problemsSlice = []func(*sync.WaitGroup, chan<- int){
 	problems.Problem7, problems.Problem8, problems.Problem9, problems.Problem10, problems.Problem11, problems.Problem12,
 	problems.Problem13, problems.Problem14, problems.Problem15, problems.Problem16, problems.Problem17, problems.Problem18,
 	problems.Problem19, problems.Problem20, problems.Problem21, problems.Problem22, problems.Problem23, // problems.Problem24,
-	problems.Problem25, problems.Problem26, // problems.Problem27, // problems.Problem28, // problems.Problem29, // problems.Problem30,
+	problems.Problem25, problems.Problem26, problems.Problem27, // problems.Problem28, // problems.Problem29, // problems.Problem30,
 	problems.Problem67,
 }
 var probLen = len(problemsSlice)
