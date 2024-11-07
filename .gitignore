@@ -2,3 +2,5 @@ mem.txt
 benchmark.go
 coverage.out
 coverage.html
+
+notes.md
