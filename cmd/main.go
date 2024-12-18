@@ -28,6 +28,7 @@ func addWaitgroup() {
 }
 
 func asynchronousMain() {
+	defer close(answerChan)
 	for _, fn := range problemsSlice {
 		go func(fn func(*sync.WaitGroup, chan<- int)) {
 			fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
@@ -39,6 +40,7 @@ func asynchronousMain() {
 }
 
 func synchronousMain() {
+	defer close(answerChan)
 	for _, fn := range problemsSlice {
 		fn(&wg, answerChan)
 		fnName := strings.Split(runtime.FuncForPC(reflect.ValueOf(fn).Pointer()).Name(), ".")[3]
